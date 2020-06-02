@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>集合</title>
-	</head>
-	<body>
-		<script type="text/javascript">
-			/**
-			 * 集合的特点： 无序性，不可重复性
-			 * */
-			 class Set{
+class Set{
 				 constructor() {
 				     this.items = {}
 				 }
@@ -38,7 +27,5 @@
 				 values(){
 					 return Object.keys(this.items)
 				 }
+				 
 			 }
-		</script>
-	</body>
-</html>

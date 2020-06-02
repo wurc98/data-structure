@@ -2,8 +2,73 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>集合</title>
+		<title>集合操作</title>
 	</head>
 	<body>
+		<script src="集合.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			/**
+			 * 交集、并集、差集
+			 * */
+
+			//并集
+			Set.prototype.Union = function(otherSet) {
+				//把值全部取出到数组内，然后再添加到集合内。集合添加操作已经做了去重处理
+				let newSet = new Set()
+				let values = this.values() //获取调用集合（A集合）的所有值
+				for (let i = 0; i < values.length; i++) {
+					newSet.add(values[i])
+				}
+				values = otherSet.values() //获取B集合的所有值
+				for (let i = 0; i < values.length; i++) {
+					newSet.add(values[i])
+				}
+				return newSet
+			}
+			//交集
+			Set.prototype.InterSection = function(otherSet) {
+				let newSet = new Set()
+				let values = this.values()
+				for (let i = 0; i < values.length; i++) {
+					if (otherSet.has(values[i])) {
+						newSet.add(values[i])
+					}
+				}
+				return newSet
+			}
+			//差集
+			Set.prototype.DifferenceSet = function(otherSet) {
+				let newSet = new Set()
+				let values = this.values()
+				for (let i = 0; i < values.length; i++) {
+					if (!otherSet.has(values[i])) {
+						newSet.add(values[i])
+					}
+				}
+				return newSet
+			}
+			//子集
+			Set.prototype.subSet = function(otherSet){
+				let values = this.values()
+				for(let i=0;i<values.length;i++){
+					if(!otherSet.has(values[i])){
+						return false
+					}
+				}
+				return true
+			}
+			var one = new Set()
+			var two = new Set()
+			one.add(1)
+			one.add(2)
+			one.add(3)
+			two.add(3)
+			// one.InterSection({a:1})
+			console.log(one.has(3))
+			console.log(two)
+			console.log(one.InterSection(two))
+			console.log(one.Union(two))
+			console.log(one.subSet(two))
+		</script>
 	</body>
 </html>
