@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>双向链表</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			class Node {
+				constructor(element) {
+					this.item = element
+					this.pre = null
+					this.next = null
+				}
+			}
+			class doublyLinkedList {
+				constructor() {
+					this.head = null
+					this.tail = null
+					this.length = null
+				}
+				//向末尾添加
+				Append(element) {
+					var newNode = new Node(element)
+					if (!this.head) {
+						this.head = newNode
+					} else {
+						let current = this.head
+						while (current.next) {
+							current = current.next
+						}
+						current.next = newNode;
+						newNode.pre = current
+					}
+					this.tail = newNode
+					this.length++
+				}
+				//插入
+				Insert(element, position) {
+					if (position < 0) {
+						throw new Error("position不能为负数！！！")
+					} else if (position > this.length) {
+						throw new Error("position不能超出链表长度！！！")
+					}
+					var newNode = new Node(element)
+					if (position === 0) {
+						let current = this.head
+						this.head = newNode
+						newNode.next = current
+						current.pre = newNode
+						this.length++
+					} else if (position === this.length) {
+						this.Append(element)
+					} else {
+						let previous = null
+						let current = this.head
+						let index = 0
+						while (index++ < position) {
+							previous = current
+							current = current.next
+						}
+						previous.next = newNode
+						newNode.pre = previous
+						newNode.next = current
+						current.pre = newNode
+						this.length++
+					}
+				}
+				//删除特定位置的元素
+				RemoveAt(position) {
+					if (position < 0) {
+						throw new Error("position不能为负数！！！")
+					} else if (position > this.length) {
+						throw new Error("position不能超出链表长度！！！")
+					}
+					if (position === 0) {
+						this.head = this.head.next
+					} else if (position === this.length - 1) {
+						this.tail.pre.next = null
+						this.tail = this.tail.pre
+					} else {
+						let previous = null
+						let current = this.head
+						let index = 0
+						while (index++ < position) {
+							previous = current
+							current = current.next
+						}
+						previous.next = current.next
+						current.next.pre = previous
+					}
+					this.length--
+				}
+				ToString() {
+					var current = this.head
+					var str = ""
+					while (current) {
+						str += "，" + current.item
+						current = current.next
+					}
+					console.log(str.slice(1))
+					return str.slice(1)
+				}
+				forwardString() {
+					var current = this.head
+					var str = ""
+					while (current) {
+						str += "，" + current.item
+						current = current.next
+					}
+					return str.slice(1)
+				}
+				backwordString() {
+					var current = this.tail
+					var str = ""
+					while (current) {
+						str += "，" + current.item
+						current = current.pre
+					}
+					return str.slice(1)
+				}
+				PeekForward() {
+					console.log(this.head)
+				}
+				PeekBackword() {
+					console.log(this.tail)
+				}
+			}
+
+			var dbList = new doublyLinkedList()
+			dbList.Append(1)
+			dbList.Append(2)
+			dbList.Append(3)
+			dbList.Append(4)
+			// dbList.Insert(2.1, 2)
+			// dbList.Insert(0.1, 0)
+			// dbList.Insert(5, 4)
+			dbList.RemoveAt(3)
+			dbList.PeekForward()
+			dbList.PeekBackword()
+			console.log(dbList.backwordString())
+			console.log(dbList.forwardString())
+		</script>
+	</body>
+</html>

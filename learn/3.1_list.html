@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>单向链表</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/**
+			 * conception:
+			 * 		由一个表头(head)和多个节点(item,next)形成一长串链表。
+			 * 表头也是一个节点，每个节点都具有一个next属性，用于指定下一节
+			 * 点，最后一个节点指向null。
+			 * advantage：
+			 * 		1、可以无限延伸，不用确定大小。
+			 * 		2、插入和删除，时间复杂度为O(1),效率高。
+			 * 		3、元素可以不是连续的空间，可以充分利用内存。
+			 * disadvantage：
+			 * 		1、访问链表的元素时，需要从头开始找，不能避免第一个元素。
+			 *      2、没有下标。
+			 * */
+			//封装节点
+			class Node {
+				constructor(item) {
+					this.item = item;
+					this.next = null
+				}
+			}
+			//实现链表
+			class LinedList {
+				constructor() {
+					this.head = null
+					this.length = 0;
+				}
+				Append(element) {
+					var count = 1;
+					var newNode = new Node(element)
+					if (!this.head) {
+						this.head = newNode
+					} else {
+						var current = this.head; //浅拷贝表头元素的地址，标记。
+						while (current.next) { //找到next为空的元素，就是最后一个元素	
+							current = current.next; //next不为空，就将标记元素变为链表的下一个元素。
+						}
+						current.next = newNode //此时的current为最后一个
+					}
+					this.length++
+					return "已插入元素:" + this.head
+				}
+				Insert(element, position) {
+					//position越界判断
+					if (position < 0) {
+						throw new Error("position不能为负数！！！")
+					} else if (position > this.length) {
+						throw new Error("position不能超出链表长度！！！")
+					}
+					var newNode = new Node(element)
+					let index = 1
+					if (position == 0) { //判断新节点是否作为表头
+						let current = this.head //将指针指向表头
+						this.head = newNode
+						newNode.next = current
+						this.length++
+					} else if (position == this.length) { //当index等于链表长度时，就是在做添加操作
+						this.Append(element)
+					} else {
+						let oldCurrent = null //保存操作节点位置的上一个节点。
+						let current = this.head 
+						while (current) {
+							if (index === position) { //找到需要做操作的节点位置
+								oldCurrent.next = newNode //将上一个节点的next指向新节点
+								newNode.next = current //新节点的next指向当前节点，完成插入操作
+								this.length++
+								return //插入操作结束，终止函数运行 
+							}
+							index++
+							oldCurrent = current // 上一个节点指针指向当前节点
+							current = current.next //当前节点指针指向下一个节点
+						}
+					}
+				}
+				Get(position) {
+					//position越界判断
+					if (position < 0) {
+						throw new Error("position不能为负数！！！")
+					} else if (position > this.length) {
+						throw new Error("position不能超出链表长度！！！")
+					}
+					let current = this.head
+					let index = 0
+					while (index++ < position) {
+						current = current.next
+					}
+					console.log(current.item)
+					return current.item
+				}
+				IndexOf(element) {
+					let current = this.head
+					let index = 0
+					while (current) {
+						if (current.item == element) {
+							return index
+						}
+						index++
+						current = current.next
+					}
+					return -1
+				}
+				Update(position, item) {
+					//position越界判断
+					if (position < 0) {
+						throw new Error("position不能为负数！！！")
+					} else if (position > this.length) {
+						throw new Error("position不能超出链表长度！！！")
+					}
+					let current = this.head
+					let index = 0
+					while (index++ < position) { //判断执行后，index加1，当index==position时，current指向该位置的元素
+						current = current.next
+					}
+					current.item = item
+				}
+				RemoveAt(position) {
+					//position越界判断
+					if (position < 0) {
+						throw new Error("position不能为负数！！！")
+					} else if (position > this.length) {
+						throw new Error("position不能超出链表长度！！！")
+					}
+					if (position == 0) {
+						this.head = this.head.next
+					} else {
+						let oldCurrent = null
+						let current = this.head
+						let index = 1
+						while (current) {
+							if (index == position) {
+								oldCurrent.next = current.next
+								this.length-- //删除操作完成，length -1
+								return
+							}
+							index++
+							oldCurrent = current
+							current = current.next
+						}
+					}
+				}
+				Remove(element) {
+					this.RemoveAt(this.IndexOf(element))
+				}
+				isEmpty(){
+					return this.length == 0
+				}
+				Size(){
+					return this.length
+				}
+				ToString() {
+					var current = this.head
+					var str = ""
+					while (current) {
+						str += "，" + current.item
+						current = current.next
+					}
+					console.log(str.slice(1))
+					return str.slice(1)
+				}
+				Peek() {
+					console.log(this.head)
+				}
+			}
+			var list = new LinedList()
+			list.Append(1)
+			list.Append(2)
+			list.Append(3)
+			list.Append(4)
+			list.Insert(2.1, 2)
+			list.Insert(0.1, 0)
+			list.Insert(5, 4)
+			list.RemoveAt(3)
+			list.ToString()
+			list.Peek()
+			list.Get(2)
+			console.log(list.IndexOf(3))
+		</script>
+	</body>
+</html>

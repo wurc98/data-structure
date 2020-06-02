@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//基于数组实现
+			class Stack {
+				constructor() {
+					this.list = [];
+					this.length = 0;
+				}
+				isEmpty() {
+					return this.length === 0;
+				}
+				Push(el) {
+					this.list.push(el);
+					this.length = this.list.length
+					return this.list
+				}
+				Pop() {
+					if(this.length==0){
+						throw new Error("当前栈为空栈，不能进行删除操作！")
+					}
+					var p = this.list.pop();
+					this.length = this.list.length
+					return p;
+				}
+				Peek() {
+					return this.list[this.length - 1]
+				}
+				Size() {
+					return this.length
+				}
+				ToString() {
+					let res = ''
+					for (var i = 0; i < this.length; i++) {
+						res += this.list[i]
+					}
+					return res
+				}
+			}
+			var newStack = new Stack();
+			newList = newStack.Push(1);
+			newList = newStack.Push(2);
+			newList = newStack.Push(3);
+			newList = newStack.Push(4);
+			newList = newStack.Push('b');
+			console.log(newList)
+			console.log(newStack.isEmpty())
+			console.log(newStack.Peek())
+			console.log(newStack.Size())
+			console.log(newStack.ToString())
+		</script>
+	</body>
+</html>

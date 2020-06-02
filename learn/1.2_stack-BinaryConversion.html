@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script src="栈.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//实现十进制转二进制
+			class BinaryConversion{
+				Dec2Bin(num){
+					let stack = new Stack()
+					while(num > 0 ){
+						stack.Push( num % 2)
+						num = Math.floor(num/2) ;
+					}
+					let binString = ''
+					while(!stack.isEmpty()){
+						binString += stack.Pop()
+					}
+					return binString
+				}
+				Hex2Bin(num){
+					
+				}
+			}
+			var d2b = new BinaryConversion()
+			console.log(d2b.Dec2Bin(100))
+		</script>
+	</body>
+</html>

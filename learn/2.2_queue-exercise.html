@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script src="队列.js"></script> 
+		<script type="text/javascript">
+			//击鼓传花
+			/**
+			 * 规则：
+			 * 		几个人围成一圈，开始数数，数到某个数字的人淘汰，最后剩下的人获得胜利。
+			 * 		求最后剩下的人是在哪个位置。
+			 * */
+
+			class TransmitFlower {
+				result(list, num) {
+					if(list.length==0){
+						return list[0]
+					}
+					var queue = new Queue()
+					console.log(list,num)
+					for(let i=0;i<list.length;i++){
+						queue.Add(list[i])
+					}
+					while(queue.Size()>1){
+						for(let i=0;i<num-1;i++){
+							queue.Add(queue.Del())
+						}
+						queue.Del()
+					}
+					var lastName=list.indexOf(queue.Front())
+					return queue.Front()
+				}
+			}
+			var res = new TransmitFlower()
+			console.log(res.result(['张三','李四','王五','赵六','王朝','马汉'],5))
+		</script>
+	</body>
+</html>

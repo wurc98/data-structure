@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//插入
+			/**
+			 * 1、队列为空时，第一个元素直接插入
+			 * 2、队列不为空时，插入的元素比较优先级。
+			 * */
+			//封装元素。
+			class priorityElement {
+				constructor(element, priority) {
+					this.element = element
+					this.priority = priority
+				}
+			}
+			class priorityQueue {
+				constructor() {
+					this.queue = []
+					this.length = 0
+				}
+				Insert(element, priority) {
+					var el = new priorityElement(element, priority)
+					if (this.queue.length === 0) {
+						this.queue.push(el)
+					} else {
+						for (let i = 0; i < this.queue.length; i++) {
+							if (el.priority < this.queue[i].priority) {
+								this.queue.splice(i, 0, el)
+								return
+							} 
+						}
+						this.queue.push(el)
+					}
+				}
+				peek() {
+					console.log(this.queue)
+					return this.queue
+				}
+			}
+			var pq = new priorityQueue();
+			pq.Insert("a", 13)
+			pq.Insert("b", 11)
+			pq.Insert("c", 14)
+			pq.Insert("d", 15)
+			pq.Insert("e", 8)
+			pq.peek()
+		</script>
+	</body>
+</html>
