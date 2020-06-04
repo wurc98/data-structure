@@ -5,5 +5,44 @@
 		<title>哈希表</title>
 	</head>
 	<body>
+		<script type="text/javascript">
+			/**
+			 * 优点：
+			 * 		1、速度快，效率高。
+			 * 		2、时间复杂度为O(1)
+			 * 原理：
+			 * 		1、基于数组实现。
+			 * 		2、将字符串转化为数字。
+			 * 基本概念：
+			 * 		1、哈希化：将大数字转化为规定范围内的数字。
+			 * 		2、哈希函数：将字符串以某种规则（字符编码，幂的连乘相加）转化为大数字，
+			 *	再哈希化为范围内的数字。
+			 * 		3、哈希表：将数据插入到哈希函数范围的哈希数的位置。
+			 * */
+			/**
+			 * 哈希化优化： 
+			 * 	将数字放大的算法使用秦九韶算法。 
+			 * 		P(x)=...
+			 * 		将时间复杂度有O(N^2)将至O(N)	
+			 * 	均匀分布：使用常量的地方，尽量使用质数。（！！！再哈希法）
+			 * */
+			/**
+			 * 设计哈希函数
+			 * 	1> 将字符转成大的数字，hashCode
+			 *    2> 将大数字压缩到规定范围之内
+			 * */
+			function HashFn(str, size) {
+				var hashCode = 0;
+				for (let i = 0; i < str.length; i++) {
+					hashCode = hashCode * 37 + str.charCodeAt(i) // 秦九韶算法 ，常量取质数
+				}
+				var index = hashCode % size
+				return index
+			}
+			console.log(HashFn('cba',16))
+			console.log(HashFn('mba',16))
+			console.log(HashFn('gba',16))
+			console.log(HashFn('dba',16))
+		</script>
 	</body>
 </html>
