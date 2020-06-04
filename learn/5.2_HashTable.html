@@ -46,6 +46,10 @@
 					}
 					bucket.push([key, value])
 					this.count++
+					if (this.count > this.limit * 0.75) {
+						var prime = this.getprime(Math.floor(this.limit * 2));
+						this.resize(prime)
+					}
 				}
 				get(key) {
 					//1
@@ -77,18 +81,59 @@
 						if (tuple[0] == key) {
 							bucket.splice(i, 1)
 							this.count--
+							//缩小容量
+							if (this.limit > 16 && this.count < this.limit * 0.25) {
+								var prime = this.getprime(Math.floor(this.limit / 2));
+								this.resize(prime)
+							}
 							return "success:" + tuple[1]
 						}
 						return "没有此元素"
 					}
 				}
+				//控制容量
+				resize(newLimit) {
+					var oldSrotrage = this.storage
+					this.storage = []
+					this.count = 0
+					this.limit = newLimit
+					for (let i = 0; i < oldSrotrage.length; i++) {
+						var bucket = oldSrotrage[i]
+						var bucket = oldSrotrage[i]
+						if (bucket == null) {
+							continue
+						}
+						//3
+						for (let i = 0; i < bucket.length; i++) {
+							var tuple = bucket[i]
+							this.put(tuple[0], tuple[1])
+						}
+					}
+				}
+				//判断某个数字是否为数字
+				isprime(num) {
+					var temp = parseInt(Math.sqrt(num))
+					for (let i = 0; i <= temp; i++) {
+						if (num % i == 0) {
+							return false
+						}
+					}
+					return true
+				}
+				//实现容量恒为质数
+				getprime(num) {
+					while(!this.isPrime(num)){
+						num++
+					}
+					return num
+				}
 			}
 			var ht = new HashTable()
-			ht.put('abc',"123")
-			ht.put('bbc',"456")
-			ht.put('cbc',"789")
+			ht.put('abc', "123")
+			ht.put('bbc', "456")
+			ht.put('cbc', "789")
 			console.log(ht.get('abc'))
-			ht.put('abc',"111")
+			ht.put('abc', "111")
 			console.log(ht.get('abc'))
 			console.log(ht.remove('abc'))
 		</script>
