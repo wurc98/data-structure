@@ -17,6 +17,16 @@
 					3、对于任何非空二叉树都满足  n0=n2+1 (n0代表度为o的节点，n2代表度为2的节点)
 				二叉搜索树、二叉排序树、二叉查找树（BST、Binary Search Tree）
 					将节点进行排序，左子节点<根节点<右子节点
+					1、插入
+					2、遍历
+						1> 先序遍历
+							根节点》》左子节点》》右子节点
+						2> 中序遍历
+							左子节点》》根节点》》右子节点
+						3> 后序遍历
+							左子节点》》右子节点》》根节点
+						4> 层序遍历
+							按层级遍历
 		 * */
 		class Node {
 			constructor(key) {
@@ -29,32 +39,222 @@
 			constructor() {
 				this.root = null
 				this.count = 0
+				this.sequence = []
 			}
+			//插入
 			insert(key) {
 				var newNode = new Node(key)
-				if (!this.root) {
+				if (this.root == null) {
 					this.root = newNode
+				} else {
+					this.insertNode(this.root, newNode)
 				}
-				var current = this.root
-				var type = null
-				while (current.left | current.right) {
-					current = current.left
-					console.log(current)
-					type = 'left'
-				}
-				current.left = newNode
+
 				return this.root
+			}
+			//利用递归插入节点
+			insertNode(node, newNode) {
+				if (node.key > newNode.key) {
+					if (node.left == null) {
+						node.left = newNode
+					} else {
+						this.insertNode(node.left, newNode)
+					}
+				} else {
+					if (node.right == null) {
+						node.right = newNode
+					} else {
+						this.insertNode(node.right, newNode)
+					}
+				}
+			}
+			//遍历
+			// 1、先序遍历
+			preOrderTraverse() {
+				this.preOrderTraverseNode(this.root)
+				var res = this.sequence
+				this.sequence = []
+				return res
+			}
+			preOrderTraverseNode(node) {
+				if (node != null) {
+					//处理经过的节点
+					this.sequence.push(node.key)
+					this.preOrderTraverseNode(node.left)   // 递归遍历左子树
+					this.preOrderTraverseNode(node.right)   // 遍历左子树之后遍历右子树
+				}
+			}
+			// 1、中序遍历
+			inOrderTraverse() {
+				this.inOrderTraverseNode(this.root)
+				var res = this.sequence
+				this.sequence = []
+				return res
+			}
+			inOrderTraverseNode(node) {
+				if (node != null) {
+					//处理经过的节点
+					this.inOrderTraverseNode(node.left)   // 递归遍历左子树
+					this.sequence.push(node.key)
+					this.inOrderTraverseNode(node.right)   // 遍历左子树之后遍历右子树
+				}
+			}
+			// 1、中序遍历
+			postOrderTraverse() {
+				this.postOrderTraverseNode(this.root)
+				var res = this.sequence
+				this.sequence = []
+				return res
+			}
+			postOrderTraverseNode(node) {
+				if (node != null) {
+					//处理经过的节点
+					this.postOrderTraverseNode(node.left)   // 递归遍历左子树
+					this.postOrderTraverseNode(node.right)   // 遍历左子树之后遍历右子树
+					this.sequence.push(node.key)
+				}
+			}
+
+			//搜索
+			//最小值
+			min() {
+				var node = this.root
+				while (node.left !== null) {
+					node = node.left
+				}
+				return node.key
+			}
+			//最大值
+			max() {
+				var node = this.root
+				while (node.right !== null) {
+					node = node.right
+				}
+				return node.key
+			}
+			//找到特定的key
+			find(key) {
+				return this.searchNode(this.root, key)
+			}
+			searchNode(node, key) {
+				if (node === null) {
+					return "不存在此Key"
+				}
+				if (node.key === key) {
+					return true
+				} else if (node.key > key) {
+					return this.searchNode(node.left, key)
+				} else {
+					return this.searchNode(node.right, key)
+				}
+			}
+			//删除
+            /*
+                1、没有子节点
+                    直接删除即可
+                2、有一个子节点
+                    将子节点接到父节点即可
+                3、度为二的子节点
+                   把右子节点接到父节点，将左子节点接到右子节点的最左侧节点下面。
+            */
+			remove(key) {
+				//找到节点，和该节点的父节点
+				var node = this.root
+				var previous = null
+				var isLeftNode = true
+				while (node.key !== key) {
+					previous = node
+					if (node.key > key) {
+						node = node.left
+					} else if (node.key < key) {
+						node = node.right
+						isLeftNode = false
+					}
+				}
+				if (node === null) {
+					return false
+				}
+				//根据三种情况 删除节点
+				if (node.left === null && node.right === null) {  //1、该节点为叶子节点
+					if (isLeftNode) {
+						previous.left = null
+					} else {
+						previous.right = null
+					}
+				} else if (node.left === null || node.right === null) {  //2、该节点度为1
+					if (isLeftNode) {
+						node.left == null ? previous.left = node.right : previous.left = node.left
+					} else {
+						node.left == null ? previous.left = node.right : previous.left = node.left
+					}
+				} else {                                            //3、该节点度为2  
+					//1、找到后继节点
+					var successor = this.getSuccessor(node)
+					//2、判断是否是根节点
+					if (node == this.root) {
+						this.root = successor
+					} else if (isLeftNode) {
+						previous.left = successor
+					} else {
+						previous.right = successor
+					}
+					//3、将删除节点的左子树赋值给后继节点
+					successor.left = node.left
+				}
+				return this.root
+			}
+			//找后继
+			getSuccessor(delNode) {
+				//找到后继，successor   
+				var successor = delNode
+				var current = delNode.right  //从删除节点的右边开始找
+				var successorParent = delNode  //找到后继节点的父节点
+				while (current !== null) {
+					successorParent = successor
+					successor = current
+					current = current.left
+				}
+				//判断寻找的后继节点是否直接就是delNode的right节点
+				//将后继节点的右子树给后继节点的父节点的左子树。
+				if (delNode != delNode.right) {
+					successorParent.left = successor.right
+					successor.right = delNode.right
+				}
+				return successor
+			}
+			getPrecursor(delNode) {
+				var node = delNode
+				while (node.left !== null) {
+					node = node.left
+				}
+				return node
 			}
 		}
 
 		var tree = new Tree()
-		console.log(tree.insert(6))
-		console.log(tree.insert(7))
-		console.log(tree.insert(2))
-		console.log(tree.insert(4))
-		console.log(tree.insert(1))
-		console.log(tree.insert(9))
-
+		tree.insert(11)
+		tree.insert(7)
+		tree.insert(15)
+		tree.insert(5)
+		tree.insert(3)
+		tree.insert(9)
+		tree.insert(8)
+		tree.insert(10)
+		tree.insert(13)
+		tree.insert(12)
+		tree.insert(14)
+		tree.insert(20)
+		tree.insert(18)
+		tree.insert(19)
+		tree.insert(25)
+		tree.insert(6)
+		console.log(tree.preOrderTraverse())
+		console.log(tree.inOrderTraverse())
+		console.log(tree.postOrderTraverse())
+		console.log(tree.min())
+		console.log(tree.max())
+		console.log(tree.remove(15))
+		console.log(tree.find(15))
 	</script>
 </body>
 
