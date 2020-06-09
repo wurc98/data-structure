@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>红黑树</title>
 </head>
+
 <body>
     <script>
         /*
@@ -40,15 +42,53 @@
                     将P节点变为黑节点，G为红节点。
                     右旋转
                     P节点到G节点的位置，G为P的右子节点，P的右子节点变为G的左子节点。
-            情况五：
+            情
+            
+            况五：
                 P是红节点，G和U是黑节点，并且N是右子节点
                 以P为根，先左旋转  ==> 将P-B （红色）当做整体插入到树中  ==》情况四
                     G                       G                       N
                P         U  ==>>>        N       U   ==>>>   P             G
              B   N                    P                     B                 U     
                                     B
-        */              
-        
+        */
+        class Node{
+            constructor(key){
+                this.key= key
+                this.left = null
+                this.right = null
+                this.color = "red"
+            }
+        }
+        class RedBlackTree {
+            constructor() {
+                this.root = null
+            }
+            insert(key){
+                let newNode = new Node(key)
+                if(this.root == null){  //情况一
+                    newNode.color = "black"
+                    this.root = newNode
+                }else{
+                    //找到插入位置，并记录其父节点（P），祖父节点（G），叔叔节点（U）
+                    let N = this.root
+                    let P = null
+                    let G = null
+                    let U = null
+                    if(N.key<key){
+
+                    }
+                }
+            }
+            right(G,U,P,N){
+
+            }
+            left(){
+
+            }
+        }
+
     </script>
 </body>
+
 </html>
