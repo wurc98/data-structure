@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排序</title>
+</head>
+
+<body>
+    <script>
+
+        /*
+            排序：冒泡，选择，插入，希尔，快速排序
+        */
+        //冒泡
+        Array.prototype.bubblingSort = function () {
+            let arr = [...this]
+            for (let j = 0; j < arr.length - 1; j++) {
+                for (let i = 0; i < arr.length - 1; i++) {
+                    if (arr[i] > arr[i + 1]) {  //交换次数  O(N2) 比较次数O(N2)
+                        let temp = arr[i + 1]
+                        arr[i + 1] = arr[i]
+                        arr[i] = temp
+                    }
+                }
+            }
+            return arr
+        }
+        //选择
+        Array.prototype.choseSort = function () {
+            let arr = [...this]
+            for (let j = 0; j < arr.length - 1; j++) {
+                var min = j
+                for (let i = min + 1; i < arr.length; i++) {
+                    if (arr[i] < arr[min]) {  //比较次数  O(N2)
+                        min = i
+                    }
+                }                             //交换次数  O(N)
+                let temp = arr[min]
+                arr[min] = arr[j]
+                arr[j] = temp
+            }
+            return arr
+        }
+        //插入
+        Array.prototype.insertSort = function () {
+            let arr = [...this]
+            for (let i = 1; i < arr.length; i++) {
+                let temp = arr[i]
+                let j = i - 1
+                while (arr[j] > temp) {
+                    arr[j + 1] = arr[j]
+                    j--
+                    if(j<0){
+                        arr[j+1] = temp
+                        break
+                    }
+                }
+            }
+            return arr
+        }
+        let arr = [4, 5, 3, 2, 1]
+        console.time('冒泡排序')             //可知，插入排序优于选择排序，优于冒泡排序
+        arr.bubblingSort()
+        console.timeEnd('冒泡排序')
+        console.time('选择排序')
+        arr.choseSort()
+        console.timeEnd('选择排序')
+        console.time('插入排序')
+        arr.insertSort()
+        console.timeEnd('插入排序')
+        console.log(arr.bubblingSort())
+        console.log(arr.choseSort())
+        console.log(arr.insertSort())
+        console.log(arr)
+
+    </script>
+</body>
+
+</html>
