@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级排序</title>
+</head>
+
+<body>
+    <script>
+        /*
+            1、希尔排序
+                基本有序
+        */
+        Array.prototype.shellSort = function () {
+            let newArr = [...this]
+            let gap = Math.floor(newArr.length / 2)
+            while (gap > 0) {
+                for (let i = gap; i < newArr.length; i++) {
+                    let temp = newArr[i]
+                    let j = i
+                    while (newArr[j - gap] > temp && j > gap - 1) {   //分组进行排序,且至遍历至gap位置
+                        newArr[j] = newArr[j - gap]
+                        j -= gap
+                    }
+                    newArr[j] = temp
+                }
+                gap = Math.floor(gap / 2)
+
+            }
+            return newArr
+        }
+        let arr = [6, 245, 72, 47, 1, 34]
+        console.time("shell排序")
+        arr.shellSort()
+        console.timeEnd("shell排序")
+
+
+    </script>
+</body>
+
+</html>
